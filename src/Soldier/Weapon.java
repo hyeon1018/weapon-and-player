@@ -38,6 +38,8 @@ public abstract class Weapon {
     int sight;
     int range;
 
+    int originDamage;//증가하기 전 원래 공격력
+
     public void attack(Field field){
         if(field.isSoldier()){
             field.getSoldier().damaged(
@@ -87,7 +89,13 @@ public abstract class Weapon {
     public void multipleDamage(double value){
         damage *= value;
     }
+    public void multipleSight(double value){
+        sight *= value;
+    }
+
     public void divideDamage(double value){
         damage /= value;
     }
+
+    public abstract void setImageIconHero();
 }

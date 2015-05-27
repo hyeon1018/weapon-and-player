@@ -2,6 +2,7 @@ package Soldier;
 
 import Map.Field;
 import Map.Map;
+import Hero.Hero;
 /**
  * Created by Lee on 2015-05-22.
  */
@@ -11,7 +12,7 @@ public class Soldier {
     private Weapon weapon;
     private String name;//이름
     private int HP;//체력
-    private final int maxHP;//최대 체력
+    private int maxHP;//최대 체력
     private int MP;//현재 이동력
     private int maxMP;//최대 이동력
     private int defense;//방어력
@@ -65,12 +66,73 @@ public class Soldier {
         this.whose = whose;
     }
 
+    //특수유닛 생성용
+    public Soldier(int type, int whose, String name){
+        switch (type){
+            case Hero.Jeanne :
+                maxHP = 360;
+                maxMP = 2;
+                defense = 0;
+                weapon = new Sword(40, 2, 1);
+                break;
+            case Hero.Alex :
+                maxHP = 150;
+                maxMP = 4;
+                defense = 0;
+                weapon = new Horse(45, 2, 1);
+                break;
+            case Hero.Eulgi :
+                maxHP = 40;
+                maxMP = 3;
+                defense = 0;
+                weapon = new Scout(10, 8, 1);
+                break;
+            case Hero.Zhao :
+                maxHP = 150;
+                maxMP = 2;
+                defense = 0;
+                weapon = new Lance(100, 2, 1);
+                break;
+            case Hero.Huang :
+                maxHP = 96;
+                maxMP = 2;
+                defense = 0;
+                weapon = new Bow(40, 3, 2);
+                break;
+            case Hero.Oda :
+                maxHP = 360;
+                maxMP = 2;
+                defense = 0;
+                weapon = new Sword(80, 2, 1);
+                break;
+            case Hero.Gyebaek :
+                maxHP = 240;
+                maxMP = 4;
+                defense = 0;
+                weapon = new Horse(60, 2, 1);
+                break;
+            default :
+                maxHP = 0;
+                maxMP = 0;
+                defense = 0;
+                System.out.println("Hero Type Error");
+                break;
+        }
+
+        HP = maxHP;
+        MP = maxMP;
+        this.whose = whose;
+        cost = 0;
+        this.name = name;
+    }
+
 
     public void attack(Field field){
         int distance = Math.abs(field.x - this.x) + Math.abs(field.y - this.y);
         //사정거리안에 상대가 있을경우
         if(distance < getWeapon().getRange()){
             weapon.attack(field);
+            MP = 0;
             //턴 없앰 추가해야함
         }
         else{
@@ -93,6 +155,12 @@ public class Soldier {
         }
     }
 
+    public void trainMaxHP(int value) {
+        maxHP += value;
+    }
+    public void trainMultipleMaxHP(double value){
+        maxHP *= value;
+    }
     public void trainMaxMP(int value){
         maxMP += value;
     }

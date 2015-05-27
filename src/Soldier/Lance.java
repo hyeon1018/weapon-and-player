@@ -13,7 +13,9 @@ public class Lance extends Weapon{
         sight = 2;
         range = 1;
 
-        image = new ImageIcon("Lance.png");
+        originDamage = damage;
+
+        image = new ImageIcon("res\\Lance.png");
     }
     public Lance(int damage, int sight, int range){
         type = Weapon.lance;
@@ -21,6 +23,13 @@ public class Lance extends Weapon{
         this.sight = sight;
         this.range = range;
 
-        image = new ImageIcon("Lance_Hero.png");
+        originDamage = damage;
+
+        setImageIconHero();
+    }
+
+    @Override
+    public void setImageIconHero() {
+        image = new ImageIcon("res\\Lance_Hero.png");
     }
 }

@@ -1,5 +1,6 @@
 package Map;
 
+import Hero.Hero;
 import Soldier.Soldier;
 import Soldier.Weapon;
 
@@ -26,6 +27,11 @@ public class Map {
         fields[2][0].setSoldier(new Soldier(Weapon.horse, 0));
         fields[3][0].setSoldier(new Soldier(Weapon.bow, 0));
         fields[4][0].setSoldier(new Soldier(Weapon.scout, 0));
+        fields[5][0].setSoldier(new Soldier(Hero.Jeanne, 0, ""));
+        fields[6][0].setSoldier(new Soldier(Hero.Zhao, 0, ""));
+        fields[7][0].setSoldier(new Soldier(Hero.Gyebaek, 0, ""));
+        fields[8][0].setSoldier(new Soldier(Hero.Huang, 0, ""));
+        fields[9][0].setSoldier(new Soldier(Hero.Eulgi, 0, ""));
         
         for(int i = 0 ; i < fields.length; i++){
         	for(int j = 0 ; j < 2 ; j++){

@@ -2,7 +2,7 @@ package Hero;
 
 import Soldier.Soldier;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -11,16 +11,18 @@ import java.util.ArrayList;
 public class Eulgi extends Hero {
     public Eulgi(){
         name = "을지문덕";
-        image = new ImageIcon("을지문덕.jpg").getImage();
+        image = new ImageIcon("res\\을지문덕.jpg").getImage();
 
         explan1 = "전략가 : 병사들의 이동력과 시야가 증가한다.";
         explan2 = "정찰병 영웅";
         explan3 = "시야 *3";
+
+        soldier = new Soldier(Hero.Eulgi, whose, name);
     }
 
 
     @Override
-    void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void initSpeciality(ArrayList<Soldier> soldiers) {
         for(int i = 0; i < soldiers.size(); i++) {
             soldiers.get(i).trainMaxMP(1);
             soldiers.get(i).getWeapon().increaseSight(1);
@@ -28,12 +30,12 @@ public class Eulgi extends Hero {
     }
 
     @Override
-    void inGameSpeciality(ArrayList<Soldier> soldiers) {
+    public void inGameSpeciality(ArrayList<Soldier> soldiers) {
 
     }
 
     @Override
-    Soldier appear() {
-        return null;
+    public Soldier appear() {
+        return soldier;
     }
 }

@@ -8,13 +8,14 @@ import Map.Player;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-public class SelectHeroFrame extends JFrame{
+public class SelectHeroFrame extends JFrame implements KeyListener{
 
 
 	//Component
@@ -133,61 +134,78 @@ public class SelectHeroFrame extends JFrame{
 		panel_1.add(label_2);
 
 		buttonLeft = new JButton("<");
+        buttonLeft.addKeyListener(this);
 		buttonLeft.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(currentHero > 0){
-					currentHero--;
-					contentPane.repaint();
-				}
+				goLeft();
 			}
 		});
 		contentPane.add(buttonLeft, BorderLayout.WEST);
 
 		buttonRight = new JButton(">");
+        buttonRight.addKeyListener(this);
 		buttonRight.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(currentHero < 7){
-					currentHero++;
-					contentPane.repaint();
-				}
+				goRight();
 			}
 		});
 		contentPane.add(buttonRight, BorderLayout.EAST);
 
 		btnSelect = new JButton("Select");
+        btnSelect.addKeyListener(this);
 		btnSelect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(selected == false){
-					player.setHero(heroes[currentHero]);
-					selected = true;
-					buttonLeft.setEnabled(false);
-					buttonRight.setEnabled(false);
-					btnSelect.setText("Cancel");
-					ob.updateViewers();
-				}
-				else if(selected == true){
-					player.setHero(null);
-					selected = false;
-					buttonLeft.setEnabled(true);
-					buttonRight.setEnabled(true);
-					btnSelect.setText("Select");
-					ob.updateViewers();
-				}
-
-				//김건휘 2015 05 25
-				//Disable Test Code//System.out.println(player.getHero().getName());
+                ready();
 			}
 		});
 		contentPane.add(btnSelect, BorderLayout.SOUTH);
 
 
-
 		setVisible(true);
 	}
 
+    private void goLeft(){
+        if(selected){
+            return;
+        }
+        if(currentHero > 0){
+            currentHero--;
+            contentPane.repaint();
+        }
+    }
+    private void goRight(){
+        if(selected){
+            return;
+        }
+        if(currentHero < 7){
+            currentHero++;
+            contentPane.repaint();
+        }
+    }
+    private void ready(){
+        if(selected == false){
+            player.setHero(heroes[currentHero]);
+            selected = true;
+            buttonLeft.setEnabled(false);
+            buttonRight.setEnabled(false);
+            btnSelect.setText("Cancel");
+            ob.updateViewers();
+        }
+        else if(selected == true){
+            player.setHero(null);
+            selected = false;
+            buttonLeft.setEnabled(true);
+            buttonRight.setEnabled(true);
+            btnSelect.setText("Select");
+            ob.updateViewers();
+        }
+
+        //김건휘 2015 05 25
+        //Disable Test Code//System.out.println(player.getHero().getName());
+    }
 
 	//method
 	public boolean isSelected(){
@@ -198,4 +216,28 @@ public class SelectHeroFrame extends JFrame{
 		this.ob = ob;
 	}
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            goLeft();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            goRight();
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_F5){
+            ready();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }

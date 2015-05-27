@@ -13,7 +13,9 @@ public class Scout extends Weapon{
         sight = 4;
         range = 1;
 
-        image = new ImageIcon("Scout.png");
+        originDamage = damage;
+
+        image = new ImageIcon("res\\Scout.png");
     }
     public Scout(int damage, int sight, int range){
         type = Weapon.scout;
@@ -21,6 +23,13 @@ public class Scout extends Weapon{
         this.sight = sight;
         this.range = range;
 
-        image = new ImageIcon("Scout_Hero.png");
+        originDamage = damage;
+
+        setImageIconHero();
+    }
+
+    @Override
+    public void setImageIconHero() {
+        image = new ImageIcon("res\\Scout_Hero.png");
     }
 }

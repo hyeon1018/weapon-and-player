@@ -11,26 +11,28 @@ import java.util.ArrayList;
 public class Hannibal extends Hero{
     public Hannibal(){
         name = "한니발 바르카";
-        image = new ImageIcon("한니발 바르카.jpg").getImage();
+        image = new ImageIcon("res\\한니발 바르카.jpg").getImage();
 
         explan1 = "효율 지휘 : 초기에 주어지는 자원이 좀 더 많다.";
         explan2 = "등장하지 않음";
         explan3 = "자원 1400";
+
+        soldier = new Soldier(Hero.Hannibal, whose, name);
     }
 
 
     @Override
-    void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void initSpeciality(ArrayList<Soldier> soldiers) {
 
     }
 
     @Override
-    void inGameSpeciality(ArrayList<Soldier> soldiers) {
+    public void inGameSpeciality(ArrayList<Soldier> soldiers) {
 
     }
 
     @Override
-    Soldier appear() {
-        return null;
+    public Soldier appear() {
+        return soldier;
     }
 }

@@ -13,7 +13,9 @@ public class Horse extends Weapon{
         sight = 2;
         range = 1;
 
-        image = new ImageIcon("Horse.png");
+        originDamage = damage;
+
+        image = new ImageIcon("res\\Horse.png");
     }
     public Horse(int damage, int sight, int range){
         type = Weapon.horse;
@@ -21,6 +23,13 @@ public class Horse extends Weapon{
         this.sight = sight;
         this.range = range;
 
-        image = new ImageIcon("Horse_Hero.png");
+        originDamage = damage;
+
+        setImageIconHero();
+    }
+
+    @Override
+    public void setImageIconHero() {
+        image = new ImageIcon("res\\Horse_Hero.png");
     }
 }
