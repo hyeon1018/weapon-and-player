@@ -1,6 +1,9 @@
 package Hero;
-import Soldier.*;
-import java.awt.Image;
+import Map.Player;
+import Soldier.Soldier;
+import Map.Field;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +18,7 @@ public abstract class Hero {
     protected String explan2;
     protected String explan3;
 
-    protected int whose;
+    protected Player player;
 
     public static final int Jeanne = 10;
     public static final int Alex = 11;
@@ -26,10 +29,14 @@ public abstract class Hero {
     public static final int Hannibal = 16;
     public static final int Gyebaek = 17;
 
-
-    public abstract void initSpeciality(ArrayList<Soldier> soldiers);
+    public abstract void initSpeciality(Player player);
+    public abstract void startSpeciality(ArrayList<Soldier> soldiers);
     public abstract void inGameSpeciality(ArrayList<Soldier> soldiers);
-    public abstract Soldier appear();//Hero 마다 수정해야함
+
+    public void appear(Field field){
+        soldier.setField(field);
+        field.setSoldier(soldier);
+    }
 
 
     public Image getImage(){
@@ -53,11 +60,7 @@ public abstract class Hero {
         return soldier;
     }
 
-    public void setWhose(int whose){
-        if(whose != 1 && whose != 2){
-            System.out.println("Hero setWhose parameter Error");
-            return;
-        }
-        this.whose = whose;
+    public void setPlayer(Player player){
+        this.player = player;
     }
 }

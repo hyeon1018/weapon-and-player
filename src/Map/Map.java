@@ -20,18 +20,7 @@ public class Map {
                 fields[i][j].setP2Visible(false);
             }
         }
-        
-        //Test
-        fields[0][0].setSoldier(new Soldier(Weapon.sword, 0));
-        fields[1][0].setSoldier(new Soldier(Weapon.lance, 0));
-        fields[2][0].setSoldier(new Soldier(Weapon.horse, 0));
-        fields[3][0].setSoldier(new Soldier(Weapon.bow, 0));
-        fields[4][0].setSoldier(new Soldier(Weapon.scout, 0));
-        fields[5][0].setSoldier(new Soldier(Hero.Jeanne, 0, ""));
-        fields[6][0].setSoldier(new Soldier(Hero.Zhao, 0, ""));
-        fields[7][0].setSoldier(new Soldier(Hero.Gyebaek, 0, ""));
-        fields[8][0].setSoldier(new Soldier(Hero.Huang, 0, ""));
-        fields[9][0].setSoldier(new Soldier(Hero.Eulgi, 0, ""));
+
         
         for(int i = 0 ; i < fields.length; i++){
         	for(int j = 0 ; j < 2 ; j++){
@@ -66,6 +55,20 @@ public class Map {
     
     public Player getP2(){
     	return this.p2;
+    }
+    
+    //TEST
+    public void setTest(Player player){
+    	fields[0][0].setSoldier(new Soldier(Weapon.sword, player));
+        fields[1][0].setSoldier(new Soldier(Weapon.lance, player));
+        fields[2][0].setSoldier(new Soldier(Weapon.horse, player));
+        fields[3][0].setSoldier(new Soldier(Weapon.bow, player));
+        fields[4][0].setSoldier(new Soldier(Weapon.scout, player));
+        fields[5][0].setSoldier(new Soldier(Hero.Jeanne, player, ""));
+        fields[6][0].setSoldier(new Soldier(Hero.Zhao, player, ""));
+        fields[7][0].setSoldier(new Soldier(Hero.Gyebaek, player, ""));
+        fields[8][0].setSoldier(new Soldier(Hero.Huang, player, ""));
+        fields[9][0].setSoldier(new Soldier(Hero.Eulgi, player, ""));
     }
     
     

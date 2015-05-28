@@ -1,5 +1,6 @@
 package Hero;
 
+import Map.Player;
 import Soldier.Soldier;
 
 import javax.swing.*;
@@ -17,12 +18,17 @@ public class Eulgi extends Hero {
         explan2 = "정찰병 영웅";
         explan3 = "시야 *3";
 
-        soldier = new Soldier(Hero.Eulgi, whose, name);
+        soldier = new Soldier(Hero.Eulgi, player, name);
     }
 
 
     @Override
-    public void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void initSpeciality(Player player) {
+
+    }
+
+    @Override
+    public void startSpeciality(ArrayList<Soldier> soldiers) {
         for(int i = 0; i < soldiers.size(); i++) {
             soldiers.get(i).trainMaxMP(1);
             soldiers.get(i).getWeapon().increaseSight(1);
@@ -34,8 +40,4 @@ public class Eulgi extends Hero {
 
     }
 
-    @Override
-    public Soldier appear() {
-        return soldier;
-    }
 }

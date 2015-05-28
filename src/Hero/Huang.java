@@ -1,8 +1,10 @@
 package Hero;
 
-import Soldier.*;
+import Map.Player;
+import Soldier.Soldier;
+import Soldier.Weapon;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -17,13 +19,17 @@ public class Huang extends Hero{
         explan2 = "궁병 영웅";
         explan3 = "체력 1.2배";
 
-        soldier = new Soldier(Hero.Huang, whose, name);
+        soldier = new Soldier(Hero.Huang, player, name);
     }
 
 
+    @Override
+    public void initSpeciality(Player player) {
+
+    }
 
     @Override
-    public void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void startSpeciality(ArrayList<Soldier> soldiers) {
         for(int i = 0; i < soldiers.size(); i++){
             if(soldiers.get(i).getWeapon().getType() == Weapon.bow){
                 soldiers.get(i).getWeapon().increaseSight(1);
@@ -37,8 +43,4 @@ public class Huang extends Hero{
 
     }
 
-    @Override
-    public Soldier appear() {
-        return soldier;
-    }
 }

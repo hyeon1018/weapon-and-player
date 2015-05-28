@@ -12,7 +12,7 @@ public class Player {
     private int maxRes = 1000;
     
     public Player(){
-        soldiers = new ArrayList<Soldier>();
+        this.soldiers = new ArrayList<Soldier>();
         hero = null;
     }
 
@@ -30,11 +30,27 @@ public class Player {
     public ArrayList<Soldier> getSoldiers(){
         return soldiers;
     }
+    public void addSoldier(Soldier sol){
+    	this.soldiers.add(sol);
+    }
+    public void removeSoldier(Soldier sol){
+    	this.soldiers.remove(sol);
+    }
     
     public void setMaxRes(int i){
     	this.maxRes = i;
     }
     public int getMaxRes(){
     	return this.maxRes;
+    }
+    
+    public int getCurRes(){
+    	
+    	int sum = 0;
+    	for(int i = 0 ; i < soldiers.size() ; i++){
+    		sum += soldiers.get(i).getCost();
+    	}
+    	
+    	return sum;
     }
 }

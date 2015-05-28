@@ -1,5 +1,6 @@
 package Hero;
 
+import Map.Player;
 import Soldier.Soldier;
 
 import javax.swing.*;
@@ -17,11 +18,16 @@ public class Jeanne extends Hero {
         explan2 = "검병 영웅";
         explan3 = "체력 *3";
 
-        soldier = new Soldier(Hero.Jeanne, whose, name);
+        soldier = new Soldier(Hero.Jeanne, player, name);
     }
 
     @Override
-    public void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void initSpeciality(Player player) {
+
+    }
+
+    @Override
+    public void startSpeciality(ArrayList<Soldier> soldiers) {
 
     }
 
@@ -32,8 +38,4 @@ public class Jeanne extends Hero {
         }
     }
 
-    @Override
-    public Soldier appear() {
-        return soldier;
-    }
 }

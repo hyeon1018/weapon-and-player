@@ -1,8 +1,7 @@
 package Soldier;
 
-import Map.Field;
-import Map.Map;
 import Hero.Hero;
+import Map.*;
 /**
  * Created by Lee on 2015-05-22.
  */
@@ -17,11 +16,11 @@ public class Soldier {
     private int maxMP;//최대 이동력
     private int defense;//방어력
     private final int cost;//자원 소모값
-    private int x, y; //
+    private Field currentField; //
 
-    private int whose;//p1것인지 p2것인지
+    private Player player;//p1것인지 p2것인지
 
-    public Soldier(int type, int whose) {
+    public Soldier(int type, Player player) {
         switch(type){
             case Weapon.sword :
                 maxHP = 120;
@@ -63,11 +62,11 @@ public class Soldier {
 
         HP = maxHP;
         MP = maxMP;
-        this.whose = whose;
+        this.player = player;
     }
 
     //특수유닛 생성용
-    public Soldier(int type, int whose, String name){
+    public Soldier(int type, Player player, String name){
         switch (type){
             case Hero.Jeanne :
                 maxHP = 360;
@@ -121,17 +120,21 @@ public class Soldier {
 
         HP = maxHP;
         MP = maxMP;
-        this.whose = whose;
+        this.player = player;
         cost = 0;
         this.name = name;
     }
 
 
-    public void attack(Field field){
-        int distance = Math.abs(field.x - this.x) + Math.abs(field.y - this.y);
+    public void attack(Field destination){
+        if(destination.getSoldier().getPlayer() == this.player){
+            return;
+        }
+
+        int distance = Math.abs(destination.x - currentField.x) + Math.abs(destination.y - currentField.y);
         //사정거리안에 상대가 있을경우
         if(distance < getWeapon().getRange()){
-            weapon.attack(field);
+            weapon.attack(destination);
             MP = 0;
             //턴 없앰 추가해야함
         }
@@ -147,11 +150,23 @@ public class Soldier {
     public void damaged(int damage){
         HP -= (damage - defense);
     }
-    public void Move(Field field){
-        int distance = Math.abs(field.x - this.x) + Math.abs(field.y - this.y);
+    public void Move(Field destination){
+        if(destination.getSoldier() != null){
+            return;
+        }
+
+        int distance = Math.abs(destination.x - currentField.x) + Math.abs(destination.y - currentField.y);
         //이동거리안에 목적지가 있을경우
         if(distance < MP){
             //추가해야함
+            currentField.setSoldier(null);
+            destination.setSoldier(this);
+            currentField = destination;
+
+            MP -= distance;
+        }
+        else{
+            System.out.println("이동 실패");
         }
     }
 
@@ -178,33 +193,26 @@ public class Soldier {
                 field = fields[i][j];
 
                 //Soldier가 p1것인지 p2것인지 구분해서 makeVisible
-                switch (whose){
-                    case 1:
-                        checkP1Visible(field, distance);
-                        break;
-                    case 2:
-                        checkP2Visible(field, distance);
-                        break;
+                if(player.getClass() == P1.class){
+                    checkP1Visible(field, distance);
+                }
+                if(player.getClass() == P2.class){
+                    checkP2Visible(field, distance);
                 }
             }
         }
     }
 
 
+    public void setField(Field currentField){
+        this.currentField = currentField;
+    }
+
     public String getName(){
         return name;
     }
-    public void setX(int x){
-        this.x = x;
-    }
-    public void setY(int y){
-        this.y = y;
-    }
-    public int getX(){
-        return x;
-    }
-    public int getY(){
-        return y;
+    public Field getCurrentField(){
+        return currentField;
     }
     public Weapon getWeapon(){
         return weapon;
@@ -227,7 +235,9 @@ public class Soldier {
     public int getDefense(){
         return defense;
     }
-
+    public Player getPlayer(){
+        return player;
+    }
     private void createSword(){
         name = "검병";
         defense = 0;
@@ -270,5 +280,5 @@ public class Soldier {
             field.setP2Visible(false);
         }
     }
-   
+
 }

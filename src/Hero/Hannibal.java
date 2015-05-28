@@ -1,8 +1,9 @@
 package Hero;
 
+import Map.Player;
 import Soldier.Soldier;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -17,12 +18,17 @@ public class Hannibal extends Hero{
         explan2 = "등장하지 않음";
         explan3 = "자원 1400";
 
-        soldier = new Soldier(Hero.Hannibal, whose, name);
+        soldier = null;
     }
 
 
     @Override
-    public void initSpeciality(ArrayList<Soldier> soldiers) {
+    public void initSpeciality(Player player) {
+        player.setMaxRes(1400);
+    }
+
+    @Override
+    public void startSpeciality(ArrayList<Soldier> soldiers) {
 
     }
 
@@ -31,8 +37,4 @@ public class Hannibal extends Hero{
 
     }
 
-    @Override
-    public Soldier appear() {
-        return soldier;
-    }
 }

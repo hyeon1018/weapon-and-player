@@ -1,12 +1,14 @@
 package Frame;
 /**
  * Created by Lee on 2015-05-21.
- */ import javax.swing.*;
+ */
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import Map.Map;
 import Map.P1;
 import Map.P2;
+import Map.Player;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,9 +17,13 @@ import java.awt.event.ActionListener;
 //Add viewer to update;
 public class PlayFrame extends JFrame implements Viewer{
 
+	Player p = new P1();
+	Player p2 = new P2();
+	Map m = new Map();
     private JPanel contentPane;
     //Replace to MapPanel
-    MapPanel mapPanel = new MapPanel(new Map(), new P1());
+    MapPanel mapPanel = new MapPanel(m, p);
+    
     private JLabel lblSoldierClass = new JLabel("X : null, Y : null");
     JLabel lblHp = new JLabel("X : null, Y : null");
     
@@ -39,7 +45,8 @@ public class PlayFrame extends JFrame implements Viewer{
     /** Create the frame. **/
     public PlayFrame() {
         super("PlayFrame");
-
+        
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
@@ -127,15 +134,18 @@ public class PlayFrame extends JFrame implements Viewer{
         gbc_label.gridx = 0;
         gbc_label.gridy = 9;
         panel_1.add(label, gbc_label);
-
+        m.setTest(p);
+        mapPanel.updateFieldButtons();
         setVisible(true);
     }
    
 
 	@Override
 	public void update() {
-		this.lblSoldierClass.setText(mapPanel.getSelectedField().toString());
-		this.lblHp.setText(mapPanel.getMouseOverField().toString());
+		this.lblSoldierClass.setText(mapPanel.getSelectedButton().getField().toString());
+		this.lblHp.setText(mapPanel.getMouseOverButton().getField().toString());
+		mapPanel.updateFieldButtons();
+		
 	}
 
 }

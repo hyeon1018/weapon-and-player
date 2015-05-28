@@ -13,8 +13,7 @@ import java.awt.*;
 public class MapPanel extends JPanel implements Viewer{
 	//나중에 수정하던지 하세요.
 	private MapButton [][] fieldBtn = new MapButton[10][10];
-	private Field selectedField;
-	private Field mouseOverField;
+	private MapButton selectedButton, mouseOverButton;
 	private Viewer view;
 	private Player player;
 	private Map map;
@@ -22,8 +21,8 @@ public class MapPanel extends JPanel implements Viewer{
 	public MapPanel(Map map, Player player){
 		this.player = player;
 		this.map = map;
-		selectedField = map.getField(0, 0);
-		mouseOverField = map.getField(0, 0);
+		selectedButton = null;
+		mouseOverButton = null;
 		
 		
 		for(int i = 0 ; i < 10 ; i ++){
@@ -54,54 +53,26 @@ public class MapPanel extends JPanel implements Viewer{
 
 	}
 	
-	public void updateSight(){
-		if(player.getClass() == P1.class){
-			for(int i = 0 ; i < 10 ; i++){
-				for(int j = 0 ; j < 10 ; j++){
-					fieldBtn[i][j].setVisible(fieldBtn[i][j].getField().isP1Visible());
-				}
-			}
-		}
-		else if(player.getClass() == P2.class){
-			for(int i = 0 ; i < 10 ; i++){
-				for(int j = 0 ; j < 10 ; j++){
-					fieldBtn[i][j].setVisible(fieldBtn[i][j].getField().isP2Visible());
-				}
-			}
-		}
-	}
-	
-
-	public void setEnableOppSide(boolean enable){
-		if(player.getClass() == P1.class){
-			for(int i = 0; i < 10 ; i++){
-				for(int j = 2 ; j < 10 ; j++){
-					fieldBtn[i][j].setEnabled(enable);
-				}
-			}
-		}
-		
-		else if(player.getClass() == P2.class){
-			for(int i = 0; i < 10 ; i++){
-				for(int j = 7 ; j >= 0 ; j--){
-					fieldBtn[i][j].setEnabled(enable);
-				}
+	public void updateFieldButtons(){
+		for(int i = 0 ; i < 10 ; i++){
+			for(int j = 0 ; j < 10 ; j++){
+				fieldBtn[i][j].updateBtn(player);
 			}
 		}
 	}
 
-    public void setSelectedField(Field f){
-        this.selectedField = f;
+    public void setSelectedButton(MapButton btn){
+        this.selectedButton = btn;
     }
-    public void setMouseOverField(Field f){
-        this.mouseOverField = f;
+    public void setMouseOverButton(MapButton btn){
+        this.mouseOverButton = btn;
     }
 
-	public Field getMouseOverField(){
-		return this.mouseOverField;
+	public MapButton getMouseOverButton(){
+		return this.mouseOverButton;
 	}
-	public Field getSelectedField(){
-		return this.selectedField;
+	public MapButton getSelectedButton(){
+		return this.selectedButton;
 	}
 
 	public void setView(Viewer view) {
@@ -115,7 +86,12 @@ public class MapPanel extends JPanel implements Viewer{
 
 	@Override
 	public void update() {
-		this.updateSight();
+		this.updateFieldButtons();
+		if(selectedButton != null){
+			selectedButton.setBackground(Color.YELLOW);
+		}
+		
+		
 	}
 	
 	
