@@ -1,15 +1,22 @@
 package Frame;
 
-import javax.swing.JButton;
-import Map.*;
+import Map.Field;
 
-public class MapButton extends JButton {
+import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class MapButton extends JButton implements MouseListener {
 	
 	private Field field;
+    private MapPanel mapPanel;
 	
-	public MapButton(Field field){
+	public MapButton(Field field, MapPanel mapPanel){
 		this.field = field;
 		this.setSoldierIcon();
+        addMouseListener(this);
+
+        this.mapPanel = mapPanel;
 	}
 	
 	public void setSoldierIcon(){
@@ -26,6 +33,35 @@ public class MapButton extends JButton {
 	public Field getField(){
 		return this.field;
 	}
-	
-	
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+        mapPanel.setSelectedField(field);
+
+        mapPanel.getView().update();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        mapPanel.setMouseOverField(field);
+
+        mapPanel.getView().update();
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

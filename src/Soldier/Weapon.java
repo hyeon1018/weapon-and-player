@@ -12,10 +12,7 @@ public abstract class Weapon {
     public static final int bow = 3;
     public static final int horse = 4;
     public static final int scout = 5;
-    protected int type;
 
-    protected ImageIcon image;
-    //Change button file name, *.jpg -> *.png
 
     private static final double[][] synastry = {
             {1, 1.2, 1, 1, 1},
@@ -33,12 +30,12 @@ public abstract class Weapon {
           말   1.2   1    1    1    1
           정찰 1     1    1    1    1
      */
-
-    int damage;
-    int sight;
-    int range;
-
-    int originDamage;//증가하기 전 원래 공격력
+    protected int type;
+    protected ImageIcon image;
+    protected int damage;
+    protected int sight;
+    protected int range;
+    protected int originDamage;//증가하기 전 원래 공격력
 
     public void attack(Field field){
         if(field.isSoldier()){

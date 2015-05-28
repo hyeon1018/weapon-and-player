@@ -134,8 +134,8 @@ public class PlayFrame extends JFrame implements Viewer{
 
 	@Override
 	public void update() {
-		this.lblSoldierClass.setText("X : " + Integer.toString(mapPanel.getSelectedX()) + ", Y : " + Integer.toString(mapPanel.getSelectedY()));
-		this.lblHp.setText("X : " + Integer.toString(mapPanel.getMouseOverX()) + ", Y : " + Integer.toString(mapPanel.getMouseOverY()));
+		this.lblSoldierClass.setText(mapPanel.getSelectedField().toString());
+		this.lblHp.setText(mapPanel.getMouseOverField().toString());
 	}
 
 }

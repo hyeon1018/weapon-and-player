@@ -1,20 +1,20 @@
 package Frame;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import Map.Field;
+import Map.Map;
+import Map.P1;
+import Map.P2;
+import Map.Player;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import Map.*;
+import java.awt.*;
 
 
-public class MapPanel extends JPanel implements MouseListener, Viewer{
+public class MapPanel extends JPanel implements Viewer{
 	//나중에 수정하던지 하세요.
 	private MapButton [][] fieldBtn = new MapButton[10][10];
-	private int selectedX, selectedY;
-	private int mouseOverX, mouseOverY;
+	private Field selectedField;
+	private Field mouseOverField;
 	private Viewer view;
 	private Player player;
 	private Map map;
@@ -22,12 +22,13 @@ public class MapPanel extends JPanel implements MouseListener, Viewer{
 	public MapPanel(Map map, Player player){
 		this.player = player;
 		this.map = map;
+		selectedField = map.getField(0, 0);
+		mouseOverField = map.getField(0, 0);
 		
 		
 		for(int i = 0 ; i < 10 ; i ++){
 			for(int j = 0 ; j < 10 ; j++){
-				fieldBtn[i][j] = new MapButton(map.getField(i, j));
-				fieldBtn[i][j].addMouseListener(this);
+				fieldBtn[i][j] = new MapButton(map.getField(i, j), this);
 			}
 		}
 
@@ -89,68 +90,28 @@ public class MapPanel extends JPanel implements MouseListener, Viewer{
 		}
 	}
 
-	public int getMouseOverX(){
-		return this.mouseOverX;
-	}
+    public void setSelectedField(Field f){
+        this.selectedField = f;
+    }
+    public void setMouseOverField(Field f){
+        this.mouseOverField = f;
+    }
 
-	public int getMouseOverY(){
-		return this.mouseOverY;
+	public Field getMouseOverField(){
+		return this.mouseOverField;
 	}
-
-	public int getSelectedX(){
-		return this.selectedX;
-	}
-
-	public int getSelectedY(){
-		return this.selectedY;
+	public Field getSelectedField(){
+		return this.selectedField;
 	}
 
 	public void setView(Viewer view) {
 		this.view = view;
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		for(int i = 0 ; i < 10 ; i++){
-			for(int j = 0 ; j < 10 ; j++){
-				if(e.getSource() == fieldBtn[i][j]){
-					this.selectedX = i;
-					this.selectedY = j;
-				}
-			}
-		}
-		//Test//System.out.println(selectedX + ", " + selectedY );
-		view.update();
-	}
+    public Viewer getView(){
+        return view;
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		for(int i = 0 ; i < 10 ; i++){
-			for(int j = 0 ; j < 10 ; j++){
-				if(e.getSource() == fieldBtn[i][j]){
-					this.mouseOverX = i;
-					this.mouseOverY = j;
-				}
-			}
-		}
-		//Test//System.out.println(mouseOverX + ", " + mouseOverY );
-		view.update();
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
 
 	@Override
 	public void update() {

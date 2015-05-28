@@ -243,7 +243,6 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
 
 	@Override
 	public void update() {
-		// TODO SetInfoLabels;
 		infoWeapon.setText(solList[mouseOverSoldier].getName());
 		infoHp.setText("HP : " + Integer.toString(solList[mouseOverSoldier].getMaxHP()));
 		infoMove.setText("MP : " + Integer.toString(solList[mouseOverSoldier].getMaxMP()));
@@ -289,7 +288,7 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// TODO For문 구조를 사용하지 않도록 수정.		
 		for(int i = 0 ; i < soldierBtn.length ; i++){
 			if(e.getSource() == soldierBtn[i]){
 				mouseOverSoldier = i;
