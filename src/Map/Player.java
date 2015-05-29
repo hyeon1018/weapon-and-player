@@ -53,4 +53,22 @@ public class Player {
     	
     	return sum;
     }
+
+    public void updateSight(Map map){
+        Field[][] fields = map.getFields();
+        for(int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[0].length; j++) {
+                if(getClass() == P1.class){
+                    fields[i][j].setP1Visible(false);
+                }
+                if(getClass() == P2.class){
+                    fields[i][j].setP2Visible(false);
+                }
+            }
+        }
+
+        for(int i = 0; i < soldiers.size(); i++){
+            soldiers.get(i).updateSight(map);
+        }
+    }
 }

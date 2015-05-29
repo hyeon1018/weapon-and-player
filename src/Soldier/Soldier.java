@@ -133,7 +133,7 @@ public class Soldier {
 
         int distance = Math.abs(destination.x - currentField.x) + Math.abs(destination.y - currentField.y);
         //사정거리안에 상대가 있을경우
-        if(distance < getWeapon().getRange()){
+        if(distance <= getWeapon().getRange()){
             weapon.attack(destination);
             MP = 0;
             //턴 없앰 추가해야함
@@ -157,7 +157,7 @@ public class Soldier {
 
         int distance = Math.abs(destination.x - currentField.x) + Math.abs(destination.y - currentField.y);
         //이동거리안에 목적지가 있을경우
-        if(distance < MP){
+        if(distance <= MP){
             //추가해야함
             currentField.setSoldier(null);
             destination.setSoldier(this);
@@ -180,27 +180,41 @@ public class Soldier {
         maxMP += value;
     }
 
-    public void makeVisible(Map map){
+
+    public void updateSight(Map map){
         Field[][] fields = map.getFields();
-        Field field = null;
+
+        int sight = weapon.getSight();
+        int currentX = currentField.x;  int currentY = currentField.y;
         int distance = 0;
 
-        //2015 05 25 이선명 수정
-        //필드맵 전체를 검사
-        for(int i = 0; i < fields.length; i++){
-            for(int j = 0; j < fields[0].length; j++){
-                //필드와의 거리를 계산해서 sight내에 있을경우 Visible로 만든다
-                field = fields[i][j];
-
-                //Soldier가 p1것인지 p2것인지 구분해서 makeVisible
+        for(int i = currentX - sight; i <= currentX + sight; i++){
+            for(int j = currentY - sight; j <= currentY + sight; j++){
                 if(player.getClass() == P1.class){
-                    checkP1Visible(field, distance);
+                    if(fields[i][j].isP1Visible()) {
+                        continue;
+                    }
+
+                    distance = Math.abs(fields[i][j].x - currentField.x) + Math.abs(fields[i][j].y - currentField.y);
+                    if(distance <= weapon.getSight()){
+                        fields[i][j].setP1Visible(true);
+                    }
                 }
-                if(player.getClass() == P2.class){
-                    checkP2Visible(field, distance);
+
+                else if(player.getClass() == P2.class){
+                    if(fields[i][j].isP2Visible()) {
+                        continue;
+                    }
+
+                    distance = Math.abs(fields[i][j].x - currentField.x) + Math.abs(fields[i][j].y - currentField.y);
+                    if(distance <= weapon.getSight()){
+                        fields[i][j].setP2Visible(true);
+                    }
                 }
             }
         }
+
+
     }
 
 
@@ -238,6 +252,7 @@ public class Soldier {
     public Player getPlayer(){
         return player;
     }
+
     private void createSword(){
         name = "검병";
         defense = 0;
@@ -264,21 +279,5 @@ public class Soldier {
         weapon = new Scout();
     }
 
-    private void checkP1Visible(Field field, int distance){
-        if(distance < weapon.getSight()){
-            field.setP1Visible(true);
-        }
-        else{
-            field.setP1Visible(false);
-        }
-    }
-    private void checkP2Visible(Field field, int distance){
-        if(distance < weapon.getSight()){
-            field.setP2Visible(true);
-        }
-        else{
-            field.setP2Visible(false);
-        }
-    }
 
 }
