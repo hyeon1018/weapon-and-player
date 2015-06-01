@@ -1,7 +1,8 @@
 package Frame;
 /**
  * Created by Lee on 2015-05-21.
- */import java.awt.BorderLayout;
+ * Released 1.0 by Kim on 2015-06-01.
+ */
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,54 +18,51 @@ import javax.swing.SwingConstants;
 
 public class MainFrame extends JFrame {
 
-    private JPanel contentPane;
 
-    /**
-     * Launch the application.
-     */
+    /** Launch the application. **/
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    MainFrame frame = new MainFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() ->{
+            try {
+                MainFrame frame = new MainFrame();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
+
+
 
     /** Create the frame. **/
     public MainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 500, 400);
-        contentPane = new JPanel();
+        JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton btnStartgame = new JButton("StartGame");
-        btnStartgame.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btnStartgame.setBounds(170, 120, 160, 50);
-        btnStartgame.addActionListener(new ActionListener() {
+        JButton btnStartGame = new JButton("StartGame");
+        btnStartGame.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnStartGame.setBounds(170, 120, 160, 50);
+        btnStartGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SelectHeroObserver();
                 dispose();
             }
         });
-        contentPane.add(btnStartgame);
+        contentPane.add(btnStartGame);
 
-        JButton button = new JButton("Exit");
-        button.addActionListener(new ActionListener() {
+        JButton btnExit = new JButton("Exit");
+        btnExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
-        button.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        button.setBounds(200, 190, 100, 50);
-        contentPane.add(button);
+        btnExit.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        btnExit.setBounds(200, 190, 100, 50);
+        contentPane.add(btnExit);
 
         JLabel lblGameName = new JLabel("Heroes of The World");
         lblGameName.setHorizontalAlignment(SwingConstants.CENTER);
