@@ -188,8 +188,21 @@ public class Soldier {
         int currentX = currentField.x;  int currentY = currentField.y;
         int distance = 0;
 
-        for(int i = currentX - sight; i <= currentX + sight; i++){
-            for(int j = currentY - sight; j <= currentY + sight; j++){
+        int underBoundX = currentX - sight;
+        int topBoundX = currentX + sight;
+        int underBoundY = currentY - sight;
+        int topBoundY = currentY + sight;
+        if(underBoundX < 0)
+            underBoundX = 0;
+        if(underBoundY < 0)
+            underBoundY = 0;
+        if(topBoundX > 9)
+            topBoundX = 9;
+        if(topBoundY > 9)
+            topBoundY = 9;
+
+        for(int i = underBoundX; i <= topBoundX; i++){
+            for(int j = underBoundY; j <= topBoundY; j++){
                 if(player.getClass() == P1.class){
                     if(fields[i][j].isP1Visible()) {
                         continue;
