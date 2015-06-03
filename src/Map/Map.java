@@ -56,21 +56,4 @@ public class Map {
     public Player getP2(){
     	return this.p2;
     }
-    
-    //TEST
-    public void setTest(Player player){
-    	fields[0][0].setSoldier(new Soldier(Weapon.sword, player));
-        fields[1][0].setSoldier(new Soldier(Weapon.lance, player));
-        fields[2][0].setSoldier(new Soldier(Weapon.horse, player));
-        fields[3][0].setSoldier(new Soldier(Weapon.bow, player));
-        fields[4][0].setSoldier(new Soldier(Weapon.scout, player));
-        fields[5][0].setSoldier(new Soldier(Hero.Jeanne, player, ""));
-        fields[6][0].setSoldier(new Soldier(Hero.Zhao, player, ""));
-        fields[7][0].setSoldier(new Soldier(Hero.Gyebaek, player, ""));
-        fields[8][0].setSoldier(new Soldier(Hero.Huang, player, ""));
-        fields[9][0].setSoldier(new Soldier(Hero.Eulgi, player, ""));
-    }
-    
-    
-
 }
