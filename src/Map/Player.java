@@ -10,26 +10,31 @@ public class Player {
     private ArrayList<Soldier> soldiers;
     private Hero hero;
     private int maxRes = 1000;
-    
+    private int originSoldiers;
+
     public Player(){
         this.soldiers = new ArrayList<Soldier>();
         hero = null;
+
+        originSoldiers = 0;
+    }
+
+    public Hero getHero(){
+        return hero;
     }
 
     public void setHero(Hero hero) {
         this.hero = hero;
     }
 
+    public ArrayList<Soldier> getSoldiers(){
+        return soldiers;
+    }
+
     public void setSoldiers(ArrayList<Soldier> soldiers) {
         this.soldiers = soldiers;
     }
 
-    public Hero getHero(){
-        return hero;
-    }
-    public ArrayList<Soldier> getSoldiers(){
-        return soldiers;
-    }
     public void addSoldier(Soldier sol){
     	this.soldiers.add(sol);
     }
@@ -37,19 +42,28 @@ public class Player {
     	this.soldiers.remove(sol);
     }
     
+    public int getMaxRes(){
+    	return this.maxRes;
+    }
+
     public void setMaxRes(int i){
     	this.maxRes = i;
     }
-    public int getMaxRes(){
-    	return this.maxRes;
+
+    public void setOriginSoldiers(){
+        this.originSoldiers = soldiers.size();
+    }
+    public int getOriginSoldiers(){
+        return originSoldiers;
     }
     
     public int getCurRes(){
     	
     	int sum = 0;
-    	for(int i = 0 ; i < soldiers.size() ; i++){
-    		sum += soldiers.get(i).getCost();
-    	}
+
+        for(Soldier s : soldiers){
+            sum += s.getCost();
+        }
     	
     	return sum;
     }
