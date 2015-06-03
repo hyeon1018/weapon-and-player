@@ -21,6 +21,10 @@ public class Hannibal extends Hero{
         soldier = null;
     }
 
+    @Override
+    public void setPlayer(Player player){
+        this.player = player;
+    }
 
     @Override
     public void initSpeciality(Player player) {
