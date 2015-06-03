@@ -34,7 +34,18 @@ public class Gyebaek extends Hero {
 
     @Override
     public void inGameSpeciality(ArrayList<Soldier> soldiers) {
+        double multipleValue = 0;
+        double HP = 0;
+        double maxHP = 0;
+        double originDamage = 0;
+        for(int i = 0; i < soldiers.size(); i++){
+            HP = (double)(soldiers.get(i).getHP());
+            maxHP = (double)(soldiers.get(i).getMaxHP());
+            originDamage = (double)(soldiers.get(i).getWeapon().getOriginDamage());
 
+            multipleValue = 1.0 - ((maxHP - HP) / (2 * maxHP));
+            soldiers.get(i).getWeapon().setDamage(multipleValue * originDamage);
+        }
     }
 
 }

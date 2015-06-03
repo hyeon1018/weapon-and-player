@@ -34,7 +34,18 @@ public class Zhao extends Hero{
 
     @Override
     public void inGameSpeciality(ArrayList<Soldier> soldiers) {
+        double multipleValue = 0;
+        double originSoldiers = (double)(player.getOriginSoldiers());
+        double currentSoldiers = (double)(player.getSoldiers().size());
 
+        double originDamage = 0;
+        multipleValue = 1 - ((originDamage - currentSoldiers) / (2 * originSoldiers));
+
+
+        for(int i = 0; i < currentSoldiers; i++){
+            originDamage = soldiers.get(i).getWeapon().getOriginDamage();
+            soldiers.get(i).getWeapon().setDamage(multipleValue * originDamage);
+        }
     }
 
 }
