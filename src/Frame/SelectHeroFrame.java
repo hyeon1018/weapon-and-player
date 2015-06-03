@@ -18,10 +18,11 @@ import java.awt.event.KeyListener;
 public class SelectHeroFrame extends JFrame implements KeyListener{
 
 
+	//Field
+	private final Hero[] heroes = new Hero[8];
 	//Component
 	//김건휘 2015 - 05 - 25
 	private JPanel contentPane;
-
 	private JPanel heroInfo;
 	private JLabel heroNamelbl;
 	private JPanel heroImagepnl;
@@ -31,10 +32,6 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
 	private JButton buttonLeft;
 	private JButton buttonRight;
 	private JButton btnSelect;
-
-
-	//Field
-	private final Hero[] heroes = new Hero[8];
 	//  0 = 잔 다르크   1 = 알렉산드로스......
 	private Player player;
 	private Observer ob;
@@ -48,6 +45,7 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
 	 */
 	public SelectHeroFrame(final Player player) {
 		super("SelectHero");
+        SetFont.setUIFont(new javax.swing.plaf.FontUIResource("Malgun Gothic",Font.PLAIN,13));
 		currentHero = 0;
 
 		heroes[0] = new Jeanne();
@@ -72,7 +70,7 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
 		heroInfo.setLayout(new CardLayout(0, 0));
 
 		JPanel panel_1 = new JPanel();
-		heroInfo.add(panel_1, "name_438386858870702");
+		heroInfo.add(panel_1);
 		panel_1.setLayout(null);
 
 
@@ -123,15 +121,15 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
 		heroInfolbl2.setBounds(34, 242, 324, 25);
 		panel_1.add(heroInfolbl2);
 
-		JLabel label_2 = new JLabel("영웅 설명 3"){
+		heroInfolbl3 = new JLabel("영웅 설명 3"){
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 setText(heroes[currentHero].getExplan3());
             }
         };
-		label_2.setBounds(34, 269, 324, 25);
-		panel_1.add(label_2);
+		heroInfolbl3.setBounds(34, 269, 324, 25);
+		panel_1.add(heroInfolbl3);
 
 		buttonLeft = new JButton("<");
         buttonLeft.addKeyListener(this);
@@ -186,36 +184,43 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
         }
     }
     private void ready(){
-        if(selected == false){
+        if(!selected){
             player.setHero(heroes[currentHero]);
+            if(heroes[currentHero].getSoldier() != null){
+                player.addSoldier(player.getHero().getSoldier());
+            }
+            player.getHero().setPlayer(player);
+
             selected = true;
             buttonLeft.setEnabled(false);
             buttonRight.setEnabled(false);
             btnSelect.setText("Cancel");
             ob.updateViewers();
         }
-        else if(selected == true){
+        else{
             player.setHero(null);
+            player.removeSoldier(player.getHero().getSoldier());
             selected = false;
             buttonLeft.setEnabled(true);
             buttonRight.setEnabled(true);
             btnSelect.setText("Select");
-            ob.updateViewers();
+        ob.updateViewers();
         }
 
         //김건휘 2015 05 25
         //Disable Test Code//System.out.println(player.getHero().getName());
+        }
+
+    //getter.
+    public boolean isSelected(){
+        return selected;
+    }
+    public void setObserver(Observer ob){
+        this.ob = ob;
     }
 
-	//method
-	public boolean isSelected(){
-		return selected;
-	}
 
-	public void setObserver(Observer ob){
-		this.ob = ob;
-	}
-
+    //KeyListener 구현
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -235,7 +240,6 @@ public class SelectHeroFrame extends JFrame implements KeyListener{
             ready();
         }
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
 

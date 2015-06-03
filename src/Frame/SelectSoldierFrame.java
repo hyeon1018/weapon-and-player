@@ -3,20 +3,18 @@ package Frame;
  * Created by Lee on 2015-05-21.
  */
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -43,7 +41,7 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
     private JPanel selectSoldierPanel;
     private SoldierButton [] soldierBtn = new SoldierButton[6];
     
-    private JPanel unberPanel;
+    private JPanel underPanel;
     private JButton continueBtn;
     //영웅 정보 패널
     private JPanel heroInfoPanel;
@@ -51,17 +49,22 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
     
     //Fields <variables>
     //Observer 추가;
-    private boolean selected;
+    private boolean selected = false;
     private Observer ob;
     private Map map;
-    Player player;
+    private Player player;
     private Soldier selectedSoldier;
     
     
     /** Create the frame. **/
     public SelectSoldierFrame(Map map, Player player) {
-    	this.player = player;
-    	
+        SetFont.setUIFont(new javax.swing.plaf.FontUIResource("Malgun Gothic",Font.PLAIN,13));
+        //init Object Variables;
+        this.player = player;
+        this.map = map;
+
+        selectedSoldier = null;
+    	//Draw Frame.
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
         contentPane = new JPanel();
@@ -79,6 +82,8 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         fieldPanel.setView(this);
         fieldPanel.updateFieldButtons();
         
+        //Info Panel -> res + info
+        // TODO change gridBagLayout -> GribLayout 
         infoPanel = new JPanel();
         mainPanel.add(infoPanel, BorderLayout.WEST);
         GridBagLayout gbl_infoPanel = new GridBagLayout();
@@ -87,7 +92,8 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         gbl_infoPanel.columnWeights = new double[]{0.0};
         gbl_infoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         infoPanel.setLayout(gbl_infoPanel);
-
+        
+        //resLables;
         resLables[0] = new JLabel("필요 자원 : 0");
         resLables[0].setFont(new Font("Malgun Gothic", Font.PLAIN, 13));
         GridBagConstraints gbc_maxRes = new GridBagConstraints();
@@ -119,7 +125,7 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         gbc_infoHp.gridy = 4;
         infoPanel.add(infoLables[1], gbc_infoHp);
 
-        infoLables[2] = new JLabel("Move : ");
+        infoLables[2] = new JLabel("move : ");
         GridBagConstraints gbc_infoMove = new GridBagConstraints();
         gbc_infoMove.insets = new Insets(0, 0, 5, 0);
         gbc_infoMove.gridx = 0;
@@ -157,11 +163,10 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         gbc_infoRange.gridy = 9;
         infoPanel.add(infoLables[6], gbc_infoRange);
 
-
+        //Select Soldier Button
         selectSoldierPanel = new JPanel();
         mainPanel.add(selectSoldierPanel, BorderLayout.SOUTH);
 
-        
         soldierBtn[0] = new SoldierButton("검병");
         soldierBtn[0].setFont(new Font("Malgun Gothic", Font.PLAIN, 13));
         soldierBtn[0].addMouseListener(this);
@@ -199,23 +204,56 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         selectSoldierPanel.add(soldierBtn[5]);
         
         
-        selectedSoldier = null;
 
-        unberPanel = new JPanel();
-        contentPane.add(unberPanel, BorderLayout.SOUTH);
-        unberPanel.setLayout(new BorderLayout(0, 0));
+        //UnberPanel -> 양측 영웅 정보 + 다음으로
+        underPanel = new JPanel();
+        contentPane.add(underPanel, BorderLayout.SOUTH);
+        underPanel.setLayout(new BorderLayout(0, 0));
 
         continuePanel = new JPanel();
         FlowLayout fl_continuePanel = (FlowLayout) continuePanel.getLayout();
         fl_continuePanel.setAlignment(FlowLayout.RIGHT);
-        unberPanel.add(continuePanel, BorderLayout.EAST);
+        underPanel.add(continuePanel, BorderLayout.EAST);
 
-        continueBtn = new JButton("준비 완료.");
+        continueBtn = new JButton("Ready");
         continuePanel.add(continueBtn);
         continueBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        continueBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                if(selected){
+                    selected = false;
+                    continueBtn.setText("Ready");
 
+                    for(SoldierButton sb : soldierBtn){
+                        sb.setEnabled(true);
+                    }
+                }else{
+                    if(player.getCurRes() > player.getMaxRes()){
+                        JOptionPane.showMessageDialog(null, "너무 많은 자원을 사용합니다.\r\n병사 수를 줄여주세요.", "자원초과", JOptionPane.WARNING_MESSAGE);
+                    }
+                    else {
+                        selected = true;
+                        continueBtn.setText("Cancel");
+
+                        for (SoldierButton sb : soldierBtn) {
+                            sb.setEnabled(false);
+                        }
+                    }
+
+                }
+                selected = true;
+                ((JButton)(e.getSource())).setText("Cancel");
+                ob.updateViewers();
+				// TODO ButtonText -> Cancel
+				// selected -> !selected
+				// set Disable other Button;
+				// Cancel; 
+			}
+		});
         heroInfoPanel = new JPanel();
-        unberPanel.add(heroInfoPanel, BorderLayout.CENTER);
+        underPanel.add(heroInfoPanel, BorderLayout.CENTER);
 
         heroLables[0] = new JLabel("내 영웅 : " + player.getHero().getName());
         heroLables[0].setFont(new Font("Malgun Gothic", Font.PLAIN, 13));
@@ -233,11 +271,41 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
         else if(player.getClass() == P1.class){
 			heroLables[2].setText("적 영웅 : " + map.getP2().getHero().getName());
 		}
-        
+
+
+        //End Draw
         this.setVisible(true);
     }
 
+    //getter, setter
+    public void setObserver(Observer ob){
+    	this.ob = ob;
+    }
+    public boolean isSelected(){
+    	return selected;
+    }
 
+    //remove old soldier, add new Soldier;
+	public void editSoldier(){
+		//Remove if Soldier is already;
+		if(fieldPanel.getSelectedButton().getField().getSoldier() != null){
+			player.removeSoldier(fieldPanel.getSelectedButton().getField().getSoldier());
+			fieldPanel.getSelectedButton().getField().setSoldier(null);
+		}
+		
+		//Add if Selected Soldier is not null;
+		if(selectedSoldier != null){
+			Soldier newsol = new Soldier(selectedSoldier.getWeapon().getType(), player);
+            newsol.setField(fieldPanel.getSelectedButton().getField());
+			fieldPanel.getSelectedButton().getField().setSoldier(newsol);
+			player.addSoldier(newsol);
+		}
+		
+		selectedSoldier = null;
+		fieldPanel.setSelectedButton(null);
+	}
+
+    //Update -> 프레임의 업데이트 될 부분을 3부분으로 나누어 업에이트 메서드 작성
 	public void updateInfoLable(){
 		if(selectedSoldier == null){
 			infoLables[0].setText("이름");
@@ -258,43 +326,28 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
 			infoLables[6].setText("사거리 : " + Integer.toString(selectedSoldier.getWeapon().getRange()));
 		}
 	}
-	
-	public void editSoldier(){
-		//Remove if Soldier is already;
-		if(fieldPanel.getSelectedButton().getField().getSoldier() != null){
-			player.removeSoldier(fieldPanel.getSelectedButton().getField().getSoldier());
-			fieldPanel.getSelectedButton().getField().setSoldier(null);
-		}
-		
-		//Add if Selected Soldier is not null;
-		if(selectedSoldier != null){
-			Soldier newsol = new Soldier(selectedSoldier.getWeapon().getType(), player);
-			fieldPanel.getSelectedButton().getField().setSoldier(newsol);
-			player.addSoldier(newsol);
-		}
-		
-		selectedSoldier = null;
-		fieldPanel.setSelectedButton(null);
-		
-		
-		
-	}
-	
 	public void updateResLabel(){
 		resLables[0].setText("필요 자원 : " + Integer.toString(player.getCurRes()));
+		if(player.getCurRes() > player.getMaxRes()){
+			resLables[0].setForeground(Color.RED);
+		}
+		else{
+			resLables[0].setForeground(Color.BLACK);
+		}
 	}
-	
 	public void updateFieldPanel(){
 		fieldPanel.update();
 	}
-	
-	@Override
+
+    //Viewer implements Methods
+    @Override
 	public void update() {
 		updateInfoLable();
 		updateResLabel();
 		updateFieldPanel();
 	}
 
+    //MouseListener implements Methods
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		selectedSoldier = ((SoldierButton)(e.getSource())).getSoldier();
@@ -305,35 +358,36 @@ public class SelectSoldierFrame extends JFrame implements Viewer, MouseListener{
 		
 		update();
 	}
-	
-	
-
 	@Override
 	public void mousePressed(MouseEvent e) {
+
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
+
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
+
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
-	}
 
-	
-	
+    }
+
+    //Soldier Button Class - 병사 정보를 가진 버튼, 병사를 선택할 때 사용한다.
 	class SoldierButton extends JButton{
 		Soldier soldier;
-		int SoldierNumber;
 		public SoldierButton(String string) {
 			super(string);
 		}
-		void setSoldier(Soldier sol){
-			this.soldier = sol;
-		}
+
 		Soldier getSoldier(){
 			return this.soldier;
+		}
+
+		void setSoldier(Soldier sol){
+			this.soldier = sol;
 		}
 	}
 }

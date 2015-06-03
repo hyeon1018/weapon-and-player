@@ -26,7 +26,8 @@ public  class FinalObserver implements Observer {
         }else{
             subject[1] = new FinalFrame(p2, false);
         }
-
+        subject[0].setObserver(this);
+        subject[1].setObserver(this);
         subject[1].setLocation(700, 100);
 
 
@@ -40,6 +41,14 @@ public  class FinalObserver implements Observer {
     }
 
     public void updateViewers() {
+    	if(subject[0].ispressed() && subject[1].ispressed()){
+			subject[0].setVisible(false);
+			subject[1].setVisible(false);
+			
+			new SelectHeroObserver();
+		}else{
+			System.out.println("P1 : "+ subject[0].ispressed() + ", P2 : " + subject[1].ispressed());
+		}
 
     }
 }

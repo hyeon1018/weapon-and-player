@@ -33,8 +33,7 @@ public class FinalFrame extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 pressrestart = true;
-                //Q. 내가 원한건 여기서 리스타트 누른거 확인 받아서 둘다 투르되면 옵저버에서 인식받고 영웅화면 넘어가는건데 이러면 되나 ??
-                //A. 하고싶으면, 옵저버한테 리스타트를 눌렀으니, 다른 창도 다 리스타트 눌렀니 하고 물어보는 함수를 만들어서, 연결해 줘야되.
+                ob.updateViewers();
             }
         });
         contentPane.add(btnRestartgame);
@@ -70,7 +69,11 @@ public class FinalFrame extends JFrame{
 	public boolean ispressed(){
     	return pressrestart;
     }
-	}
+
+    public void setObserver(FinalObserver fb){
+        this.ob = fb;
+    }
+}
 
 
 

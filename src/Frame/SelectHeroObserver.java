@@ -6,9 +6,10 @@ import Map.*;
  * Created by Lee on 2015-05-21.
  */
 public class SelectHeroObserver implements Observer{
+	
 	private Player p1;
 	private Player p2;
-	
+	// TODO? -> selectHeroFrame -> View
 	private SelectHeroFrame [] subject = new SelectHeroFrame[2];
 	
 	public SelectHeroObserver() {
