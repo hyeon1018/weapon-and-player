@@ -7,16 +7,11 @@ import javax.swing.ImageIcon;
  * Created by Lee on 2015-05-22.
  */
 public abstract class Weapon {
-    public static final int sword = 1;
-    public static final int lance = 2;
-    public static final int bow = 3;
-    public static final int horse = 4;
-    public static final int scout = 5;
-    protected int type;
-
-    protected ImageIcon image;
-    //Change button file name, *.jpg -> *.png
-
+    public static final int sword = 0;
+    public static final int lance = 1;
+    public static final int bow = 2;
+    public static final int horse = 3;
+    public static final int scout = 4;
     private static final double[][] synastry = {
             {1, 1.2, 1, 1, 1},
             {1, 1, 1, 1.2, 1},
@@ -24,6 +19,9 @@ public abstract class Weapon {
             {1.2, 1, 1, 1, 1},
             {1, 1, 1, 1, 1},
     };
+    protected int type;
+    //Change button file name, *.jpg -> *.png
+    protected ImageIcon image;
     //행이 공격하는쪽, 열이 공격받는쪽
     /*
                 검   창   활   말   정찰
@@ -33,12 +31,11 @@ public abstract class Weapon {
           말   1.2   1    1    1    1
           정찰 1     1    1    1    1
      */
+    protected int damage;
+    protected int sight;
+    protected int range;
 
-    int damage;
-    int sight;
-    int range;
-
-    int originDamage;//증가하기 전 원래 공격력
+    protected int originDamage;//증가하기 전 원래 공격력
 
     public void attack(Field field){
         if(field.isSoldier()){
@@ -53,6 +50,12 @@ public abstract class Weapon {
     public int getDamage(){
         return damage;
     }
+
+    public void setDamage(double damage){
+        int intDamage = (int)damage;
+        this.damage = intDamage;
+    }
+
     public int getType(){
         return type;
     }
@@ -64,6 +67,10 @@ public abstract class Weapon {
     }
     public ImageIcon getImage(){
         return image;
+    }
+
+    public int getOriginDamage(){
+        return originDamage;
     }
 
     public void increaseDamage(int value){
@@ -98,6 +105,5 @@ public abstract class Weapon {
     }
     
     public abstract void setImageIconHero();
-    
-    
+
 }
