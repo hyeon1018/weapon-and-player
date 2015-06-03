@@ -8,6 +8,7 @@ import Map.*;
 //2015-05-25 이선명
     //checkP1Visible, checkP2Visible, makeVisible 메소드 추가함
 public class Soldier {
+    private final int cost;//자원 소모값
     private Weapon weapon;
     private String name;//이름
     private int HP;//체력
@@ -15,7 +16,6 @@ public class Soldier {
     private int MP;//현재 이동력
     private int maxMP;//최대 이동력
     private int defense;//방어력
-    private final int cost;//자원 소모값
     private Field currentField; //
 
     private Player player;//p1것인지 p2것인지
@@ -125,15 +125,24 @@ public class Soldier {
         this.name = name;
     }
 
+    public void inTurn(){
+        MP = maxMP;
+    }
 
     public void attack(Field destination){
+        if(MP == 0){
+            System.out.println("이동력 없음");
+            return;
+        }
         if(destination.getSoldier().getPlayer() == this.player){
+            System.out.println("아군 병사임");
             return;
         }
 
         int distance = Math.abs(destination.x - currentField.x) + Math.abs(destination.y - currentField.y);
         //사정거리안에 상대가 있을경우
         if(distance <= getWeapon().getRange()){
+            System.out.println("Attack");
             weapon.attack(destination);
             MP = 0;
             //턴 없앰 추가해야함
@@ -149,9 +158,19 @@ public class Soldier {
     }
     public void damaged(int damage){
         HP -= (damage - defense);
+
+        if(HP <= 0){
+            death();
+        }
     }
-    public void Move(Field destination){
+    public void move(Field destination){
+        if(MP == 0){
+            System.out.println("이동력 없음");
+            return;
+        }
+
         if(destination.getSoldier() != null){
+            System.out.println("다른 병사 있음.");
             return;
         }
 
@@ -182,6 +201,9 @@ public class Soldier {
 
 
     public void updateSight(Map map){
+        if(currentField == null){
+            return;
+        }
         Field[][] fields = map.getFields();
 
         int sight = weapon.getSight();
@@ -265,6 +287,9 @@ public class Soldier {
     public Player getPlayer(){
         return player;
     }
+    public void setPlayer(Player player){
+        this.player = player;
+    }
 
     private void createSword(){
         name = "검병";
@@ -290,6 +315,11 @@ public class Soldier {
         name = "정찰병";
         defense = 0;
         weapon = new Scout();
+    }
+
+    private void death(){
+        player.removeSoldier(this);
+        currentField.setSoldier(null);
     }
 
 
